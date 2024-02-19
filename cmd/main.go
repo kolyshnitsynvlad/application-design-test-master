@@ -17,8 +17,6 @@ func main() {
 
 	log := logger.New()
 
-	log.LogErrorf("int if work??")
-
 	ctx := context.Background()
 
 	ap := app.NewApp(cfg, log)
