@@ -50,7 +50,7 @@ go run main.go
 ```
 
 ```sh
-curl --location --request POST 'localhost:8080/orders' \
+curl --location --request POST 'localhost:8082/orders' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "hotel_id": "reddison",
