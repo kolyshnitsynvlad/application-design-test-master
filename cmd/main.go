@@ -21,7 +21,7 @@ func main() {
 
 	ctx := context.Background()
 
-	ap := app.NewApp(ctx, cfg, log)
+	ap := app.NewApp(cfg, log)
 
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)

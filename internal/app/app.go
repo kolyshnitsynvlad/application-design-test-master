@@ -12,9 +12,9 @@ type App struct {
 	httpServer *http.Server
 }
 
-func NewApp(ctx context.Context, cfg config.Config, log *logger.Logger) *App {
+func NewApp(cfg config.Config, log *logger.Logger) *App {
 	a := &App{}
-	a.initHTTPServer(ctx, cfg, log)
+	a.initHTTPServer(cfg, log)
 	return a
 }
 
@@ -25,7 +25,7 @@ func (a *App) Shutdown(ctx context.Context) error {
 	return a.httpServer.Shutdown(ctx)
 }
 
-func (a *App) initHTTPServer(ctx context.Context, cfg config.Config, log *logger.Logger) {
+func (a *App) initHTTPServer(cfg config.Config, log *logger.Logger) {
 	a.httpServer = &http.Server{
 		Addr:         cfg.Address,
 		Handler:      booking_server.NewRouter(log),
