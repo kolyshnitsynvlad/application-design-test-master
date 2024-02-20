@@ -5,6 +5,11 @@ import (
 	"log"
 )
 
+type CustomLogger interface {
+	LogErrorf(format string, v ...any)
+	LogInfo(format string, v ...any)
+}
+
 type Logger struct {
 	log *log.Logger
 }

@@ -1,20 +1,21 @@
 package app
 
 import (
-	booking_server "applicationDesignTest/internal/booking-server"
 	"applicationDesignTest/internal/config"
-	"applicationDesignTest/internal/logger"
+	booking_server "applicationDesignTest/internal/http-server"
+	"applicationDesignTest/internal/lib/logger"
 	"context"
 	"net/http"
 )
 
 type App struct {
-	httpServer *http.Server
+	serviceProvider *serviceProvider
+	httpServer      *http.Server
 }
 
 func NewApp(cfg config.Config, log *logger.Logger) *App {
 	a := &App{}
-	a.initHTTPServer(cfg, log)
+	a.initDeps(cfg, log)
 	return a
 }
 
@@ -25,10 +26,25 @@ func (a *App) Shutdown(ctx context.Context) error {
 	return a.httpServer.Shutdown(ctx)
 }
 
+func (a *App) initDeps(cfg config.Config, log *logger.Logger) {
+	inits := []func(config.Config, *logger.Logger){
+		a.initHTTPServer,
+		a.initServiceProvider,
+	}
+
+	for _, f := range inits {
+		f(cfg, log)
+	}
+}
+func (a *App) initServiceProvider(_ config.Config, log *logger.Logger) {
+	a.serviceProvider = newServiceProvider(log)
+}
+
+// роутер можно вынести во входные параметры при создании
 func (a *App) initHTTPServer(cfg config.Config, log *logger.Logger) {
 	a.httpServer = &http.Server{
 		Addr:         cfg.Address,
-		Handler:      booking_server.NewRouter(log),
+		Handler:      booking_server.NewRouter(log, a.serviceProvider.BookingService()),
 		ReadTimeout:  cfg.Timeout,
 		WriteTimeout: cfg.Timeout,
 		IdleTimeout:  cfg.IdleTimeout,

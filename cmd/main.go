@@ -3,7 +3,7 @@ package main
 import (
 	"applicationDesignTest/internal/app"
 	"applicationDesignTest/internal/config"
-	"applicationDesignTest/internal/logger"
+	"applicationDesignTest/internal/lib/logger"
 	"context"
 	"os"
 	"os/signal"

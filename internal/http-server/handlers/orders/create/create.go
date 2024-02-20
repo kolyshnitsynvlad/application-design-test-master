@@ -1,8 +1,9 @@
 package create
 
 import (
-	"applicationDesignTest/internal/logger"
+	"applicationDesignTest/internal/lib/logger"
 	"applicationDesignTest/internal/model"
+	"context"
 	"errors"
 	"github.com/go-chi/render"
 	"io"
@@ -34,11 +35,11 @@ type Response struct {
 	To        time.Time `json:"to"`
 }
 
-type OrderBooker interface {
-	BookOrder(order model.Order) error
+type OrderReserve interface {
+	Create(ctx context.Context, order model.Order) error
 }
 
-func New(log *logger.Logger) http.HandlerFunc {
+func New(log *logger.Logger, orderReserve OrderReserve) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.LogInfo("Start orders handler")
 
@@ -61,6 +62,17 @@ func New(log *logger.Logger) http.HandlerFunc {
 			})
 			return
 		}
+		//TODO need context
+		err = orderReserve.Create(context.Background(), req.convertReqDataToOrder())
+		if err != nil {
+			log.LogErrorf("the service returned an error: %w", err)
+			w.WriteHeader(http.StatusInternalServerError) //TODO it is need ?
+			render.JSON(w, r, Response{
+				Status: StatusError,
+				Error:  "failed to decode request",
+			})
+			return
+		}
 
 		w.WriteHeader(http.StatusCreated)
 		render.JSON(w, r, Response{
@@ -73,5 +85,15 @@ func New(log *logger.Logger) http.HandlerFunc {
 		})
 
 		log.LogInfo("Order successfully created: %v", req)
+	}
+}
+
+func (r *Request) convertReqDataToOrder() model.Order {
+	return model.Order{
+		HotelID:   r.HotelID,
+		RoomID:    r.RoomID,
+		UserEmail: r.UserEmail,
+		From:      r.From,
+		To:        r.To,
 	}
 }
