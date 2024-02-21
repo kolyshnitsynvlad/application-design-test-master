@@ -6,14 +6,14 @@ import (
 	"time"
 )
 
-type repository struct {
+type Repository struct {
 	Orders       []model.Order
 	Availability []model.RoomAvailability
 	rwm          sync.RWMutex
 }
 
-func NewRepository() *repository {
-	return &repository{
+func NewRepository() *Repository {
+	return &Repository{
 		Orders:       make([]model.Order, 0, 10),
 		Availability: getAvailability(),
 	}

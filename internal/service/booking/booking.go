@@ -10,13 +10,13 @@ type BookingRepository interface {
 	CreateOrder(ctx context.Context, newOrder model.Order) error
 }
 
-type service struct {
+type Service struct {
 	bookingRepository BookingRepository
 	log               logger.CustomLogger
 }
 
-func NewService(bookingRepository BookingRepository, log logger.CustomLogger) *service {
-	return &service{
+func NewService(bookingRepository BookingRepository, log logger.CustomLogger) *Service {
+	return &Service{
 		bookingRepository: bookingRepository,
 		log:               log,
 	}

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (r *repository) CreateOrder(_ context.Context, newOrder model.Order) error {
+func (r *Repository) CreateOrder(_ context.Context, newOrder model.Order) error {
 
 	daysToBook := daysBetween(newOrder.From, newOrder.To)
 

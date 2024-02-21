@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func (s *service) Create(ctx context.Context, order model.Order) error {
+func (s *Service) Create(ctx context.Context, order model.Order) error {
 
 	//TODO Validation
 
