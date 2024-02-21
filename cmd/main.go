@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// TODO нормально пробрасывать контекст
 func main() {
 
 	cfg := config.MustLoad()
