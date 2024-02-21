@@ -1,19 +1,16 @@
 package create
 
 import (
+	resp "applicationDesignTest/internal/lib/api/responce"
 	"applicationDesignTest/internal/lib/logger"
 	"applicationDesignTest/internal/model"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/go-chi/render"
 	"io"
 	"net/http"
 	"time"
-)
-
-const (
-	StatusOK    = "OK"
-	StatusError = "Error"
 )
 
 type Request struct {
@@ -26,8 +23,7 @@ type Request struct {
 
 // TODO create general structure
 type Response struct {
-	Status    string    `json:"status"`
-	Error     string    `json:"error,omitempty"`
+	resp.Response
 	HotelID   string    `json:"hotel_id"`
 	RoomID    string    `json:"room_id"`
 	UserEmail string    `json:"email"`
@@ -41,42 +37,33 @@ type OrderCreator interface {
 
 func New(log *logger.Logger, orderCreator OrderCreator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.LogInfo("Start orders handler")
+		log.LogInfo("Start order create request")
 
 		var req Request
 		err := render.DecodeJSON(r.Body, &req)
 		if errors.Is(err, io.EOF) {
 			// Такую ошибку встретим, если получили запрос с пустым телом.
 			log.LogErrorf("request body is empty")
-			render.JSON(w, r, Response{
-				Status: StatusError,
-				Error:  "request body is empty",
-			})
+			render.JSON(w, r, resp.Error("request body is empty"))
 			return
 		}
 		if err != nil {
 			log.LogErrorf("failed to decode request body: %v", err)
-			render.JSON(w, r, Response{
-				Status: StatusError,
-				Error:  "failed to decode request",
-			})
+			render.JSON(w, r, resp.Error("failed to decode request"))
 			return
 		}
 		//TODO need context
 		err = orderCreator.Create(context.Background(), req.convertReqDataToOrder())
 		if err != nil {
-			log.LogErrorf("the service returned an error: %w", err)
+			log.LogErrorf("the service returned an error: %v", err)
 			w.WriteHeader(http.StatusInternalServerError) //TODO it is need ?
-			render.JSON(w, r, Response{
-				Status: StatusError,
-				Error:  "failed to decode request",
-			})
+			render.JSON(w, r, resp.Error(fmt.Sprintf("can't create order, error: %v", err)))
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
 		render.JSON(w, r, Response{
-			Status:    StatusOK,
+			Response:  resp.OK(),
 			HotelID:   req.HotelID,
 			RoomID:    req.RoomID,
 			UserEmail: req.UserEmail,
