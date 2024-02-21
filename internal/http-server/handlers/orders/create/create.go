@@ -35,11 +35,11 @@ type Response struct {
 	To        time.Time `json:"to"`
 }
 
-type OrderReserve interface {
+type OrderCreator interface {
 	Create(ctx context.Context, order model.Order) error
 }
 
-func New(log *logger.Logger, orderReserve OrderReserve) http.HandlerFunc {
+func New(log *logger.Logger, orderCreator OrderCreator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.LogInfo("Start orders handler")
 
@@ -63,7 +63,7 @@ func New(log *logger.Logger, orderReserve OrderReserve) http.HandlerFunc {
 			return
 		}
 		//TODO need context
-		err = orderReserve.Create(context.Background(), req.convertReqDataToOrder())
+		err = orderCreator.Create(context.Background(), req.convertReqDataToOrder())
 		if err != nil {
 			log.LogErrorf("the service returned an error: %w", err)
 			w.WriteHeader(http.StatusInternalServerError) //TODO it is need ?

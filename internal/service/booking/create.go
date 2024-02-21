@@ -7,7 +7,7 @@ import (
 
 func (s *service) Create(ctx context.Context, order model.Order) error {
 
-	// validation
+	//TODO Validation
 
 	//Repository
 	err := s.bookingRepository.CreateOrder(ctx, order)

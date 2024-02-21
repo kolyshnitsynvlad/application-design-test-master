@@ -28,8 +28,8 @@ func (a *App) Shutdown(ctx context.Context) error {
 
 func (a *App) initDeps(cfg config.Config, log *logger.Logger) {
 	inits := []func(config.Config, *logger.Logger){
-		a.initHTTPServer,
 		a.initServiceProvider,
+		a.initHTTPServer,
 	}
 
 	for _, f := range inits {
