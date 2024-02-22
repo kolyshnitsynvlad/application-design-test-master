@@ -51,7 +51,7 @@ func New(log *logger.Logger, orderCreator OrderCreator) http.HandlerFunc {
 			render.JSON(w, r, resp.Error("failed to decode request"))
 			return
 		}
-		//TODO need content
+
 		err = orderCreator.Create(context.Background(), req.convertReqDataToOrder())
 		if err != nil {
 			log.LogErrorf("the service returned an error: %v", err)
