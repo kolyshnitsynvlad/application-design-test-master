@@ -8,8 +8,11 @@ import (
 )
 
 func (s *Service) Create(ctx context.Context, order model.Order) error {
-
-	//TODO Validation
+	//data validation
+	if err := order.Validation(); err != nil {
+		s.log.LogErrorf("Invalid order, err: %v", err)
+		return err
+	}
 
 	reservedRooms, err := s.bookingRepository.RoomReservation(ctx, order)
 	if err != nil {
@@ -18,7 +21,7 @@ func (s *Service) Create(ctx context.Context, order model.Order) error {
 	}
 
 	// payment simulation
-	payment := paymentSimulation(false)
+	payment := paymentSimulation(true)
 
 	if !payment {
 		err = s.bookingRepository.CancelReservation(ctx, reservedRooms)

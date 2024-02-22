@@ -67,8 +67,8 @@ curl --location --request POST 'localhost:8082/orders' \
     "hotel_id": "reddison",
     "room_id": "lux",
     "email": "guest@mail.ru",
-    "from": "2024-01-02T00:00:00Z",
-    "to": "2024-01-04T00:00:00Z"
+    "from": "2024-03-02T00:00:00Z",
+    "to": "2024-03-04T00:00:00Z"
 }'
 ```
 
@@ -79,7 +79,7 @@ curl --location --request POST 'localhost:8082/orders' \
     "hotel_id": "reddisona",
     "room_id": "lux",
     "email": "guest@mail.ru",
-    "from": "2024-01-02T00:00:00Z",
-    "to": "2024-01-04T00:00:00Z"
+    "from": "2024-03-02T00:00:00Z",
+    "to": "2024-03-01T00:00:00Z"
 }'
 ```

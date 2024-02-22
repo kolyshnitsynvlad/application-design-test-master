@@ -34,11 +34,11 @@ func NewRepository() *Repository {
 
 func getAvailability() []model.RoomAvailability {
 	return []model.RoomAvailability{
-		{"reddison", "lux", date(2024, 1, 1), 1},
-		{"reddison", "lux", date(2024, 1, 2), 1},
-		{"reddison", "lux", date(2024, 1, 3), 1},
-		{"reddison", "lux", date(2024, 1, 4), 1},
-		{"reddison", "lux", date(2024, 1, 5), 0},
+		{"reddison", "lux", date(2024, 3, 1), 1},
+		{"reddison", "lux", date(2024, 3, 2), 1},
+		{"reddison", "lux", date(2024, 3, 3), 1},
+		{"reddison", "lux", date(2024, 3, 4), 1},
+		{"reddison", "lux", date(2024, 3, 5), 0},
 	}
 }
 

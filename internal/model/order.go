@@ -1,6 +1,13 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var (
+	ErrIncorrectOrderData = errors.New("order data is incorrect")
+)
 
 type Order struct {
 	HotelID   string    `json:"hotel_id"`
@@ -10,14 +17,21 @@ type Order struct {
 	To        time.Time `json:"to"`
 }
 
-type RoomAvailability struct {
-	HotelID string    `json:"hotel_id"`
-	RoomID  string    `json:"room_id"`
-	Date    time.Time `json:"date"`
-	Quota   int       `json:"quota"`
-}
-
-type ReservedRoomsIDs struct {
-	Quota int
-	IDs   []int
+func (o *Order) Validation() error {
+	if len(o.HotelID) == 0 {
+		return ErrIncorrectOrderData
+	}
+	if len(o.RoomID) == 0 {
+		return ErrIncorrectOrderData
+	}
+	if len(o.UserEmail) == 0 {
+		return ErrIncorrectOrderData
+	}
+	if o.From.Before(time.Now()) {
+		return ErrIncorrectOrderData
+	}
+	if o.From.After(o.To) {
+		return ErrIncorrectOrderData
+	}
+	return nil
 }
