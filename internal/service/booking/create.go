@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Service) Create(ctx context.Context, order model.Order) error {
-	//data validation
+	// data validation
 	if err := order.Validation(); err != nil {
 		s.log.LogErrorf("Invalid order, err: %v", err)
 		return err

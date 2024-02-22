@@ -14,7 +14,7 @@ type BookingService interface {
 	Create(ctx context.Context, order model.Order) error
 }
 
-func NewRouter(log *logger.Logger, service BookingService) http.Handler {
+func NewRouter(log logger.CustomLogger, service BookingService) http.Handler {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Post("/orders", create.New(log, service))

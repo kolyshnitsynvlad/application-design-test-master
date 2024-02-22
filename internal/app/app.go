@@ -2,7 +2,7 @@ package app
 
 import (
 	"applicationDesignTest/internal/config"
-	booking_server "applicationDesignTest/internal/http-server"
+	bookingserver "applicationDesignTest/internal/http-server"
 	"applicationDesignTest/internal/lib/logger"
 	"context"
 	"net/http"
@@ -44,7 +44,7 @@ func (a *App) initServiceProvider(_ config.Config, log *logger.Logger) {
 func (a *App) initHTTPServer(cfg config.Config, log *logger.Logger) {
 	a.httpServer = &http.Server{
 		Addr:         cfg.Address,
-		Handler:      booking_server.NewRouter(log, a.serviceProvider.BookingService()),
+		Handler:      bookingserver.NewRouter(log, a.serviceProvider.BookingService()),
 		ReadTimeout:  cfg.Timeout,
 		WriteTimeout: cfg.Timeout,
 		IdleTimeout:  cfg.IdleTimeout,

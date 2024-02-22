@@ -34,7 +34,7 @@ func main() {
 	<-done
 
 	log.LogInfo("stopping server")
-	//timeout to config
+	// timeout to config
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 

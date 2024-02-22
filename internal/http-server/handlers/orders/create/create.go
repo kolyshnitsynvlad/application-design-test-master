@@ -34,7 +34,7 @@ type OrderCreator interface {
 	Create(ctx context.Context, order model.Order) error
 }
 
-func New(log *logger.Logger, orderCreator OrderCreator) http.HandlerFunc {
+func New(log logger.CustomLogger, orderCreator OrderCreator) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.LogInfo("Start order create request")
 
@@ -55,7 +55,7 @@ func New(log *logger.Logger, orderCreator OrderCreator) http.HandlerFunc {
 		err = orderCreator.Create(context.Background(), req.convertReqDataToOrder())
 		if err != nil {
 			log.LogErrorf("the service returned an error: %v", err)
-			w.WriteHeader(http.StatusInternalServerError) //TODO it is need ?
+			w.WriteHeader(http.StatusInternalServerError) // TODO it is need ?
 			render.JSON(w, r, resp.Error(fmt.Sprintf("can't create order, error: %v", err)))
 			return
 		}
