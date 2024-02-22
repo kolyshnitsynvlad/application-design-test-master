@@ -9,7 +9,9 @@ import (
 )
 
 type BookingRepository interface {
-	CreateOrder(_ context.Context, newOrder model.Order) error
+	CreateOrder(ctx context.Context, newOrder model.Order) error
+	RoomReservation(ctx context.Context, newOrder model.Order) (model.ReservedRoomsIDs, error)
+	CancelReservation(ctx context.Context, reservedRooms model.ReservedRoomsIDs) error
 }
 
 type BookingService interface {

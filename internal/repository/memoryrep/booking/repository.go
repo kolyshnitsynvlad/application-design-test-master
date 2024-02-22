@@ -7,15 +7,28 @@ import (
 )
 
 type Repository struct {
-	Orders       []model.Order
+	OrdersRep       OrdersRep
+	AvailabilityRep AvailabilityRep
+}
+
+type OrdersRep struct {
+	sync.Mutex
+	Orders []model.Order
+}
+
+type AvailabilityRep struct {
+	sync.Mutex
 	Availability []model.RoomAvailability
-	rwm          sync.RWMutex
 }
 
 func NewRepository() *Repository {
 	return &Repository{
-		Orders:       make([]model.Order, 0, 10),
-		Availability: getAvailability(),
+		OrdersRep: OrdersRep{
+			Orders: make([]model.Order, 0, 10),
+		},
+		AvailabilityRep: AvailabilityRep{
+			Availability: getAvailability(),
+		},
 	}
 }
 

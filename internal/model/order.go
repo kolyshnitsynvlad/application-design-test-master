@@ -16,3 +16,8 @@ type RoomAvailability struct {
 	Date    time.Time `json:"date"`
 	Quota   int       `json:"quota"`
 }
+
+type ReservedRoomsIDs struct {
+	Quota int
+	IDs   []int
+}

@@ -8,6 +8,8 @@ import (
 
 type BookingRepository interface {
 	CreateOrder(ctx context.Context, newOrder model.Order) error
+	RoomReservation(ctx context.Context, newOrder model.Order) (model.ReservedRoomsIDs, error)
+	CancelReservation(ctx context.Context, reservedRooms model.ReservedRoomsIDs) error
 }
 
 type Service struct {
